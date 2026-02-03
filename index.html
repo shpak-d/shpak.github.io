@@ -42,7 +42,7 @@
     #no {
       background: #f44336;
       position: absolute;
-      left: calc(50% - 80px);  /* приблизний центр */
+      left: calc(50% - 80px);
       top: 150px;
     }
     p {
@@ -61,60 +61,59 @@
     <button id="no">Ні</button>
   </div>
 
-  <p>(спробуй натиснути "ні"... якщо вдасться 😏)</p>
+  <p>(спробуй натиснути «ні»... якщо вдасться 😏)</p>
 
   <script>
-    const yesBtn = document.getElementById('yes');
-    const noBtn = document.getElementById('no');
+  const yesBtn = document.getElementById('yes');
+  const noBtn = document.getElementById('no');
 
-    let yesSize = 1;           // масштаб
-    let yesPadding = 20;       // базовий padding
-    let yesFont = 2.2;         // базовий font-size в rem
+  let yesSize    = 1;
+  let yesPadding = 20;
+  let yesFont    = 2.2;
 
-    function moveNoButton() {
-      const padding = 40; // відступи від країв, щоб не вилітала
-      const maxX = window.innerWidth - noBtn.offsetWidth - padding * 2;
-      const maxY = window.innerHeight - noBtn.offsetHeight - padding * 2;
+  function moveNoButton() {
+    // Більш надійні відступи: кнопка не підходить ближче 30 px до країв
+    const safePadding = 30;
 
-      const randomX = padding + Math.random() * maxX;
-      const randomY = padding + Math.random() * maxY;
+    // Обчислюємо максимальні координати, щоб кнопка повністю вміщалася
+    const maxX = window.innerWidth  - noBtn.offsetWidth  - safePadding * 2;
+    const maxY = window.innerHeight - noBtn.offsetHeight - safePadding * 2;
 
-      noBtn.style.left = randomX + 'px';
-      noBtn.style.top  = randomY + 'px';
-    }
+    // Якщо maxX або maxY стали негативними (екран замалий) — ставимо в центр
+    if (maxX < 0) maxX = 0;
+    if (maxY < 0) maxY = 0;
 
-    function growYesButton() {
-      yesSize += 0.18;          // крок зростання (можна змінити)
-      yesPadding += 8;
-      yesFont += 0.25;
+    const randomX = safePadding + Math.random() * maxX;
+    const randomY = safePadding + Math.random() * maxY;
 
-      // обмеження, щоб не стала гігантською
-      if (yesSize > 3.2) yesSize = 3.2;
-      if (yesPadding > 60) yesPadding = 60;
-      if (yesFont > 4.0) yesFont = 4.0;
+    noBtn.style.left = randomX + 'px';
+    noBtn.style.top  = randomY + 'px';
+  }
 
-      yesBtn.style.transform = `scale(${yesSize})`;
-      yesBtn.style.padding   = `${yesPadding}px ${yesPadding * 3}px`;
-      yesBtn.style.fontSize  = `${yesFont}rem`;
-    }
+  function growYesButton() {
+    yesSize    += 0.18;
+    yesPadding += 8;
+    yesFont    += 0.25;
 
-    // Тікає ТІЛЬКИ після кліку
-    noBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      moveNoButton();
-      growYesButton();
-    });
+    if (yesSize    > 3.2) yesSize    = 3.2;
+    if (yesPadding > 60)  yesPadding = 60;
+    if (yesFont    > 4.0) yesFont    = 4.0;
 
-    // Якщо якимось дивом натиснули "Ні" (маловірогідно)
-    noBtn.addEventListener('click', () => {
-      alert('Ти все-таки натиснула "Ні"? 😢 Але я тебе все одно люблю ❤️');
-    });
+    yesBtn.style.transform = `scale(${yesSize})`;
+    yesBtn.style.padding   = `${yesPadding}px ${yesPadding * 3}px`;
+    yesBtn.style.fontSize  = `${yesFont}rem`;
+  }
 
-    // "Так" — фінал
-    yesBtn.addEventListener('click', () => {
-      alert('Я знав! 💕 Ти моя назавжди! 🥰 Люблю тебе ❤️❤️❤️');
-    });
-  </script>
+  noBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    moveNoButton();
+    growYesButton();
+  });
+
+  yesBtn.addEventListener('click', () => {
+    alert('Я знав! 💕 Ти моя назавжди! 🥰 Люблю тебе ❤️❤️❤️');
+  });
+</script>
 
 </body>
 </html>
