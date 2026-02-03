@@ -12,57 +12,43 @@
       background: linear-gradient(135deg, #ffebee, #ffcdd2);
       min-height: 100vh;
       margin: 0;
-      overflow: hidden;
       position: relative;
+      overflow: hidden;
     }
     h1 {
       color: #c2185b;
       font-size: 3em;
-      margin-bottom: 40px;
-      text-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 50px;
     }
-    .buttons {
+    .container {
       position: relative;
-      min-height: 200px;
+      min-height: 300px;
     }
     button {
       padding: 20px 60px;
       font-size: 2.2rem;
-      margin: 30px;
+      margin: 30px 10px;
       border: none;
       border-radius: 50px;
       color: white;
       cursor: pointer;
-      transition: all 0.3s ease;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      transition: all 0.4s ease;
     }
     #yes {
       background: #4caf50;
       transform: scale(1);
     }
-    #yes.grow {
-      transform: scale(1.3);
-      padding: 28px 80px;
-      font-size: 2.8rem;
-      box-shadow: 0 12px 30px rgba(76,175,80,0.5);
-      animation: pulse 1.5s infinite;
-    }
     #no {
       background: #f44336;
       position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
-    @keyframes pulse {
-      0% { transform: scale(1.3); }
-      50% { transform: scale(1.45); }
-      100% { transform: scale(1.3); }
+      left: calc(50% - 80px);  /* приблизний центр */
+      top: 150px;
     }
     p {
       font-size: 1.6rem;
       color: #880e4f;
-      margin-top: 60px;
+      margin-top: 80px;
     }
   </style>
 </head>
@@ -70,67 +56,63 @@
 
   <h1>Будеш моєю Валентинкою? ❤️</h1>
 
-  <div class="buttons">
+  <div class="container">
     <button id="yes">Так</button>
     <button id="no">Ні</button>
   </div>
 
-  <p>(спробуй сказати "ні"... якщо зможеш 😏)</p>
+  <p>(спробуй натиснути "ні"... якщо вдасться 😏)</p>
 
   <script>
     const yesBtn = document.getElementById('yes');
     const noBtn = document.getElementById('no');
 
-    // Змінна для відстеження розміру "Так"
-    let yesScale = 1;
+    let yesSize = 1;           // масштаб
+    let yesPadding = 20;       // базовий padding
+    let yesFont = 2.2;         // базовий font-size в rem
 
-    // Функція, яка переміщує кнопку "Ні" в випадкове місце
     function moveNoButton() {
-      const maxX = window.innerWidth - noBtn.offsetWidth - 40;
-      const maxY = window.innerHeight - noBtn.offsetHeight - 40;
+      const padding = 40; // відступи від країв, щоб не вилітала
+      const maxX = window.innerWidth - noBtn.offsetWidth - padding * 2;
+      const maxY = window.innerHeight - noBtn.offsetHeight - padding * 2;
 
-      const randomX = Math.random() * maxX;
-      const randomY = Math.random() * maxY;
+      const randomX = padding + Math.random() * maxX;
+      const randomY = padding + Math.random() * maxY;
 
       noBtn.style.left = randomX + 'px';
-      noBtn.style.top = randomY + 'px';
-      noBtn.style.transform = 'none'; // прибираємо початковий translate
+      noBtn.style.top  = randomY + 'px';
     }
 
-    // Збільшуємо кнопку "Так" після кожної спроби "Ні"
     function growYesButton() {
-      yesScale += 0.25; // можна змінити крок, наприклад 0.15 або 0.3
-      yesBtn.style.transform = `scale(${yesScale})`;
-      yesBtn.classList.add('grow');
+      yesSize += 0.18;          // крок зростання (можна змінити)
+      yesPadding += 8;
+      yesFont += 0.25;
 
-      // Якщо дуже велика — можна обмежити
-      if (yesScale > 2.5) {
-        yesScale = 2.5;
-      }
+      // обмеження, щоб не стала гігантською
+      if (yesSize > 3.2) yesSize = 3.2;
+      if (yesPadding > 60) yesPadding = 60;
+      if (yesFont > 4.0) yesFont = 4.0;
+
+      yesBtn.style.transform = `scale(${yesSize})`;
+      yesBtn.style.padding   = `${yesPadding}px ${yesPadding * 3}px`;
+      yesBtn.style.fontSize  = `${yesFont}rem`;
     }
 
-    // Подія на клік по "Ні"
+    // Тікає ТІЛЬКИ після кліку
     noBtn.addEventListener('click', (e) => {
-      e.preventDefault(); // на всяк випадок
+      e.preventDefault();
       moveNoButton();
       growYesButton();
     });
 
-    // Додатково: тікає при наведенні миші (класичний трюк)
-    noBtn.addEventListener('mouseover', () => {
-      moveNoButton();
-      growYesButton();
-    });
-
-    // Якщо все ж вдасться натиснути "Ні" (наприклад з клавіатури)
+    // Якщо якимось дивом натиснули "Ні" (маловірогідно)
     noBtn.addEventListener('click', () => {
-      alert('Ой... ти справді натиснула "Ні"? 😢\nАле я все одно тебе люблю ❤️');
+      alert('Ти все-таки натиснула "Ні"? 😢 Але я тебе все одно люблю ❤️');
     });
 
-    // Клік по "Так" — щасливий фінал
+    // "Так" — фінал
     yesBtn.addEventListener('click', () => {
-      alert('Я знав! 💕 Тепер ти моя назавжди! 🥰\nЛюблю тебе дуже сильно ❤️❤️❤️');
-      // Можна додати тут конфетті або переадресацію на милу картинку
+      alert('Я знав! 💕 Ти моя назавжди! 🥰 Люблю тебе ❤️❤️❤️');
     });
   </script>
 
