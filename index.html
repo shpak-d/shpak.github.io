@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Будеш моєю Валентинкою? 💌</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
       min-height: 100dvh;
       background: linear-gradient(135deg, #ffebee, #ffcdd2);
@@ -37,8 +33,8 @@
       position: relative;
       width: 100%;
       max-width: 420px;
-      height: 340px;
-      margin: 0 20px;
+      flex: 1;
+      min-height: 300px;
     }
     button {
       position: absolute;
@@ -69,7 +65,7 @@
       background: #f44336;
       left: 50%;
       transform: translateX(-50%);
-      top: 55%;  /* початкова позиція — під «Так» */
+      top: 30%;  /* початкова позиція — значно вище «Так» */
     }
     .hearts {
       position: absolute;
@@ -78,73 +74,64 @@
       opacity: 0;
       transition: opacity 0.6s ease;
     }
-    .hearts.visible {
-      opacity: 0.9;
-    }
+    .hearts.visible { opacity: 0.9; }
     .heart {
       position: absolute;
-      width: 28px;
-      height: 28px;
+      width: 28px; height: 28px;
       background: #e91e63;
       transform: rotate(-45deg);
       border-radius: 6px 50% 50% 50%;
       animation: float 4.5s infinite ease-in-out;
     }
-    .heart:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
-    .heart:nth-child(2) { top: 10%; left: 70%; animation-delay: 0.7s; }
-    .heart:nth-child(3) { top: 65%; left: 80%; animation-delay: 1.3s; }
-    .heart:nth-child(4) { top: 75%; left: 20%; animation-delay: 2.1s; }
+    .heart:nth-child(1) { top:20%; left:15%; animation-delay:0s; }
+    .heart:nth-child(2) { top:10%; left:70%; animation-delay:0.7s; }
+    .heart:nth-child(3) { top:65%; left:80%; animation-delay:1.3s; }
+    .heart:nth-child(4) { top:75%; left:20%; animation-delay:2.1s; }
     @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(-45deg) scale(1); }
-      50% { transform: translateY(-20px) rotate(-45deg) scale(1.12); }
+      0%,100% { transform:translateY(0) rotate(-45deg) scale(1); }
+      50%     { transform:translateY(-20px) rotate(-45deg) scale(1.12); }
     }
     #modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
+      position: fixed; inset:0;
+      background:rgba(0,0,0,0.6);
+      display:none;
+      align-items:center; justify-content:center;
+      z-index:100;
       backdrop-filter: blur(3px);
     }
     .modal-content {
-      background: white;
-      border-radius: 24px;
-      padding: 24px;
-      max-width: 90%;
-      text-align: center;
-      box-shadow: 0 15px 50px rgba(0,0,0,0.35);
-      animation: appear 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      background:white;
+      border-radius:24px;
+      padding:24px;
+      max-width:90%;
+      text-align:center;
+      box-shadow:0 15px 50px rgba(0,0,0,0.35);
+      animation:appear 0.4s cubic-bezier(0.34,1.56,0.64,1);
     }
     .modal-content img {
-      max-width: 100%;
-      border-radius: 16px;
-      margin: 16px 0 20px;
-      box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+      max-width:100%;
+      border-radius:16px;
+      margin:16px 0 20px;
+      box-shadow:0 6px 25px rgba(0,0,0,0.2);
     }
-    .modal-content h2 {
-      color: #c2185b;
-      margin-bottom: 12px;
-    }
+    .modal-content h2 { color:#c2185b; margin-bottom:12px; }
     .close {
-      background: #e91e63;
-      color: white;
-      border: none;
-      padding: 14px 40px;
-      font-size: 1.2rem;
-      border-radius: 999px;
-      margin-top: 16px;
-      cursor: pointer;
+      background:#e91e63;
+      color:white;
+      border:none;
+      padding:14px 40px;
+      font-size:1.2rem;
+      border-radius:999px;
+      margin-top:16px;
+      cursor:pointer;
     }
     @keyframes appear {
-      from { transform: scale(0.75); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+      from { transform:scale(0.75); opacity:0; }
+      to   { transform:scale(1);    opacity:1; }
     }
-    @media (max-width: 480px) {
-      button { padding: 16px 40px; font-size: 1.7rem; }
-      h1 { font-size: clamp(1.9rem, 8vw, 2.8rem); }
-      .container { height: 300px; }
+    @media (max-width:480px) {
+      button { padding:16px 40px; font-size:1.7rem; }
+      h1 { font-size: clamp(1.9rem,8vw,2.8rem); }
     }
   </style>
 </head>
@@ -173,7 +160,7 @@
       <h2>Я знав! 🥰 Люблю тебе! 💖</h2>
       <img src="https://raw.githubusercontent.com/shpak-d/shpak.github.io/main/images/photo_5206456693515031380_y.jpg"
            alt="Наше миле фото"
-           style="max-width: 100%; border-radius: 16px; margin: 16px 0 20px; box-shadow: 0 6px 25px rgba(0,0,0,0.2);">
+           style="max-width:100%; border-radius:16px; margin:16px 0 20px; box-shadow:0 6px 25px rgba(0,0,0,0.2);">
       <p>Тепер ти офіційно моя Валентинка ❤️<br>Скоро приїду 😘</p>
       <button class="close" onclick="document.getElementById('modal').style.display='none'">Закрити</button>
     </div>
@@ -192,15 +179,42 @@
     let clickCount = 0;
 
     function getSafeRandomPosition() {
-      const maxX = window.innerWidth - noBtn.offsetWidth - SAFE_PADDING * 2;
-      const maxY = window.innerHeight - noBtn.offsetHeight - SAFE_PADDING;
+      const btnWidth  = noBtn.offsetWidth;
+      const btnHeight = noBtn.offsetHeight;
 
-      // Обмежуємо максимальну висоту, щоб кнопка не йшла в самий низ
-      const MAX_Y_PERCENT = 0.72; // 72% висоти екрану — нижче зазвичай незручно натискати
-      const restrictedMaxY = Math.min(maxY, window.innerHeight * MAX_Y_PERCENT - noBtn.offsetHeight);
+      const maxX = window.innerWidth  - btnWidth  - SAFE_PADDING * 2;
+      const maxY = window.innerHeight - btnHeight - SAFE_PADDING;
 
-      const x = SAFE_PADDING + Math.random() * Math.max(0, maxX);
-      const y = SAFE_PADDING + Math.random() * Math.max(0, restrictedMaxY - SAFE_PADDING);
+      // Зона, яку виключаємо навколо кнопки "Так" (приблизно прямокутник + запас)
+      const yesRect = yesBtn.getBoundingClientRect();
+      const forbiddenLeft   = yesRect.left   - 40;
+      const forbiddenRight  = yesRect.right  + 40;
+      const forbiddenTop    = yesRect.top    - 60;
+      const forbiddenBottom = yesRect.bottom + 60;
+
+      let x, y;
+      let attempts = 0;
+      const MAX_ATTEMPTS = 30;
+
+      do {
+        x = SAFE_PADDING + Math.random() * Math.max(0, maxX);
+        y = SAFE_PADDING + Math.random() * Math.max(0, maxY - SAFE_PADDING);
+
+        attempts++;
+        // Перевіряємо, чи не потрапили в заборонену зону
+        const overlaps = !(
+          x + btnWidth  < forbiddenLeft ||
+          x             > forbiddenRight ||
+          y + btnHeight < forbiddenTop   ||
+          y             > forbiddenBottom
+        );
+
+        if (!overlaps || attempts >= MAX_ATTEMPTS) break;
+      } while (true);
+
+      // Додаткове обмеження по висоті (щоб не йшла в самий низ)
+      const MAX_Y_PERCENT = 0.72;
+      y = Math.min(y, window.innerHeight * MAX_Y_PERCENT - btnHeight);
 
       return { x, y };
     }
@@ -217,8 +231,8 @@
       yesScale += GROW_STEP;
 
       yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
-      yesBtn.style.padding   = `${18 + yesScale * 12}px ${50 + yesScale * 20}px`;
-      yesBtn.style.fontSize  = `${1.9 + yesScale * 0.6}rem`;
+      yesBtn.style.padding   = `${18 + yesScale*12}px ${50 + yesScale*20}px`;
+      yesBtn.style.fontSize  = `${1.9 + yesScale*0.6}rem`;
 
       if (clickCount >= SHOW_HEARTS_AFTER_CLICKS) {
         hearts.classList.add('visible');
@@ -232,7 +246,6 @@
       modal.style.display = 'flex';
     });
 
-    // Початкове положення + при кожному resize
     window.addEventListener('load', moveNo);
     window.addEventListener('resize', moveNo);
   </script>
