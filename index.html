@@ -178,7 +178,7 @@
 	
     const GROW_STEP = 0.18;
 	const NO_SHRINK_STEP = 0.12;         // на скільки зменшується "Ні" за один клік
-    const MIN_NO_SCALE   = 0.003;          // мінімальний розмір, щоб кнопка залишалася читаємою
+    const MIN_NO_SCALE   = 0.03;          // мінімальний розмір, щоб кнопка залишалася читаємою
 	
     const SAFE_PADDING = 20;
     const SHOW_HEARTS_AFTER_CLICKS = 6;
@@ -248,7 +248,12 @@
       noBtn.style.fontSize  = `${1.9 * noScale}rem`;
 
       // серця та сяйво
-      if (clickCount >= SHOW_HEARTS_AFTER_CLICKS) {
+      if (clickCount >= 6) {
+		noBtn.style.display = 'none';          // просто зникає після 6 натискань
+		hearts.classList.add('visible');
+		yesBtn.classList.add('glow');
+	  } else {
+		(clickCount >= SHOW_HEARTS_AFTER_CLICKS) {
         hearts.classList.add('visible');
         yesBtn.classList.add('glow');
       }
