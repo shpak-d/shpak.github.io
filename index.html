@@ -174,7 +174,12 @@
     const modal  = document.getElementById('modal');
 
     let yesScale = 1;
-    const GROW_STEP = 0.22;
+	let noScale  = 1;                    // ← нова змінна для кнопки "Ні"
+	
+    const GROW_STEP = 0.18;
+	const NO_SHRINK_STEP = 0.12;         // на скільки зменшується "Ні" за один клік
+    const MIN_NO_SCALE   = 0.3;          // мінімальний розмір, щоб кнопка залишалася читаємою
+	
     const SAFE_PADDING = 20;
     const SHOW_HEARTS_AFTER_CLICKS = 6;
     let clickCount = 0;
