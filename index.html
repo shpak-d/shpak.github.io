@@ -175,11 +175,11 @@
 
     let yesScale = 1;
 	let noScale  = 1;                    // ← нова змінна для кнопки "Ні"
-	
+
     const GROW_STEP = 0.18;
 	const NO_SHRINK_STEP = 0.12;         // на скільки зменшується "Ні" за один клік
     const MIN_NO_SCALE   = 0.03;          // мінімальний розмір, щоб кнопка залишалася читаємою
-	
+
     const SAFE_PADDING = 20;
     const SHOW_HEARTS_AFTER_CLICKS = 6;
     let clickCount = 0;
@@ -235,27 +235,22 @@
     noBtn.addEventListener('click', () => {
       clickCount++;
       yesScale += GROW_STEP;
-	  noScale = Math.max(MIN_NO_SCALE, noScale - NO_SHRINK_STEP);
-	  
-	  // зростання "Так"
+
+	    // зростання "Так"
       yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
       yesBtn.style.padding   = `${18 + yesScale*12}px ${50 + yesScale*20}px`;
       yesBtn.style.fontSize  = `${1.9 + yesScale*0.6}rem`;
-	  
-	  // зменшення "Ні"
-      noBtn.style.transform = `scale(${noScale})`;
-      noBtn.style.padding   = `${18 * noScale}px ${50 * noScale}px`;
-      noBtn.style.fontSize  = `${1.9 * noScale}rem`;
 
-      // серця та сяйво
-      if (clickCount >= 6) {
-		noBtn.style.display = 'none';          // просто зникає після 6 натискань
-		hearts.classList.add('visible');
-		yesBtn.classList.add('glow');
-	  } else {
-		(clickCount >= SHOW_HEARTS_AFTER_CLICKS) {
+	    if (clickCount >= 6) {
+        noBtn.style.display = 'none';          // просто зникає
         hearts.classList.add('visible');
         yesBtn.classList.add('glow');
+      } else {
+      // зменшення "Ні" до 6-го кліку
+        noScale = Math.max(0.35, noScale - 0.13);
+        noBtn.style.transform = `scale(${noScale})`;
+        noBtn.style.padding   = `${18 * noScale}px ${50 * noScale}px`;
+        noBtn.style.fontSize  = `${1.9 * noScale}rem`;
       }
 
       moveNo();
