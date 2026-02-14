@@ -55,7 +55,7 @@
       left: 50%;
       bottom: 40px;
       transform: translateX(-50%) scale(1);
-      z-index: 10;
+      z-index: 5;
     }
     #yes.glow {
       box-shadow: 0 0 30px #66bb6a, 0 0 50px #4caf50;
@@ -65,8 +65,8 @@
       background: #f44336;
       left: 50%;
       transform: translateX(-50%);
-      top: 30%;  /* початкова позиція — значно вище «Так» */
-	  z-index: 20;
+      top: 30%;
+      z-index: 999;
     }
     .hearts {
       position: absolute;
@@ -94,20 +94,22 @@
     }
     #modal {
       position: fixed; inset:0;
-      background:rgba(0,0,0,0.6);
+      background:rgba(0,0,0,0.65);
       display:none;
-      align-items:center; justify-content:center;
-      z-index:100;
-      backdrop-filter: blur(3px);
+      place-items: center;
+      z-index:1000;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
     .modal-content {
       background:white;
-      border-radius:24px;
-      padding:24px;
-      max-width:90%;
-      text-align:center;
-      box-shadow:0 15px 50px rgba(0,0,0,0.35);
-      animation:appear 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      border-radius:20px;
+      padding:24px 20px;
+      max-width:90vw;
+      max-height:85vh;
+      overflow-y:auto;
+      box-shadow:0 20px 60px rgba(0,0,0,0.35);
+      animation:modalAppear 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
     .modal-content img {
       max-width:100%;
@@ -126,9 +128,9 @@
       margin-top:16px;
       cursor:pointer;
     }
-    @keyframes appear {
-      from { transform:scale(0.75); opacity:0; }
-      to   { transform:scale(1);    opacity:1; }
+    @keyframes modalAppear {
+      from { opacity:0; transform:scale(0.85) translateY(20px); }
+      to   { opacity:1; transform:scale(1) translateY(0); }
     }
     @media (max-width:480px) {
       button { padding:16px 40px; font-size:1.7rem; }
@@ -174,40 +176,37 @@
     const modal  = document.getElementById('modal');
 
     let yesScale = 1;
-	let noScale  = 1;                    // ← нова змінна для кнопки "Ні"
+    let noScale  = 1;
+    let clickCount = 0;
 
-    const GROW_STEP = 0.18;
-	const NO_SHRINK_STEP = 0.12;         // на скільки зменшується "Ні" за один клік
-    const MIN_NO_SCALE   = 0.03;          // мінімальний розмір, щоб кнопка залишалася читаємою
+    const YES_GROW_STEP  = 0.22;
+    const NO_SHRINK_STEP = 0.13;
+    const MIN_NO_SCALE   = 0.35;
 
     const SAFE_PADDING = 20;
     const SHOW_HEARTS_AFTER_CLICKS = 6;
-    let clickCount = 0;
 
     function getSafeRandomPosition() {
-      const btnWidth  = noBtn.offsetWidth;
-      const btnHeight = noBtn.offsetHeight;
+      const btnWidth  = noBtn.offsetWidth  * noScale;
+      const btnHeight = noBtn.offsetHeight * noScale;
 
       const maxX = window.innerWidth  - btnWidth  - SAFE_PADDING * 2;
       const maxY = window.innerHeight - btnHeight - SAFE_PADDING;
 
-      // Зона, яку виключаємо навколо кнопки "Так" (приблизно прямокутник + запас)
       const yesRect = yesBtn.getBoundingClientRect();
-      const forbiddenLeft   = yesRect.left   - 40;
-      const forbiddenRight  = yesRect.right  + 40;
-      const forbiddenTop    = yesRect.top    - 60;
-      const forbiddenBottom = yesRect.bottom + 60;
+      const forbiddenLeft   = yesRect.left   - 50;
+      const forbiddenRight  = yesRect.right  + 50;
+      const forbiddenTop    = yesRect.top    - 70;
+      const forbiddenBottom = yesRect.bottom + 70;
 
-      let x, y;
-      let attempts = 0;
+      let x, y, attempts = 0;
       const MAX_ATTEMPTS = 30;
 
       do {
         x = SAFE_PADDING + Math.random() * Math.max(0, maxX);
         y = SAFE_PADDING + Math.random() * Math.max(0, maxY - SAFE_PADDING);
-
         attempts++;
-        // Перевіряємо, чи не потрапили в заборонену зону
+
         const overlaps = !(
           x + btnWidth  < forbiddenLeft ||
           x             > forbiddenRight ||
@@ -218,7 +217,6 @@
         if (!overlaps || attempts >= MAX_ATTEMPTS) break;
       } while (true);
 
-      // Додаткове обмеження по висоті (щоб не йшла в самий низ)
       const MAX_Y_PERCENT = 0.72;
       y = Math.min(y, window.innerHeight * MAX_Y_PERCENT - btnHeight);
 
@@ -229,31 +227,29 @@
       const pos = getSafeRandomPosition();
       noBtn.style.left = pos.x + 'px';
       noBtn.style.top  = pos.y + 'px';
-      noBtn.style.transform = 'none';
+      noBtn.style.transform = `scale(${noScale})`;
     }
 
     noBtn.addEventListener('click', () => {
       clickCount++;
-      yesScale += GROW_STEP;
+      yesScale += YES_GROW_STEP;
 
-	    // зростання "Так"
       yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
-      yesBtn.style.padding   = `${18 + yesScale*12}px ${50 + yesScale*20}px`;
-      yesBtn.style.fontSize  = `${1.9 + yesScale*0.6}rem`;
+      yesBtn.style.padding   = `${18 + yesScale * 12}px ${50 + yesScale * 20}px`;
+      yesBtn.style.fontSize  = `${1.9 + yesScale * 0.6}rem`;
 
-	    if (clickCount >= 6) {
-        noBtn.style.display = 'none';          // просто зникає
+      if (clickCount >= 6) {
+        noBtn.style.display = 'none';
         hearts.classList.add('visible');
         yesBtn.classList.add('glow');
       } else {
-      // зменшення "Ні" до 6-го кліку
-        noScale = Math.max(0.35, noScale - 0.13);
+        noScale = Math.max(MIN_NO_SCALE, noScale - NO_SHRINK_STEP);
         noBtn.style.transform = `scale(${noScale})`;
         noBtn.style.padding   = `${18 * noScale}px ${50 * noScale}px`;
         noBtn.style.fontSize  = `${1.9 * noScale}rem`;
       }
 
-      moveNo();
+      if (clickCount < 6) moveNo();
     });
 
     yesBtn.addEventListener('click', () => {
