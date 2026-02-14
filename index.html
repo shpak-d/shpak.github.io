@@ -235,11 +235,19 @@
     noBtn.addEventListener('click', () => {
       clickCount++;
       yesScale += GROW_STEP;
-
+	  noScale = Math.max(MIN_NO_SCALE, noScale - NO_SHRINK_STEP);
+	  
+	  // зростання "Так"
       yesBtn.style.transform = `translateX(-50%) scale(${yesScale})`;
       yesBtn.style.padding   = `${18 + yesScale*12}px ${50 + yesScale*20}px`;
       yesBtn.style.fontSize  = `${1.9 + yesScale*0.6}rem`;
+	  
+	  // зменшення "Ні"
+      noBtn.style.transform = `scale(${noScale})`;
+      noBtn.style.padding   = `${18 * noScale}px ${50 * noScale}px`;
+      noBtn.style.fontSize  = `${1.9 * noScale}rem`;
 
+      // серця та сяйво
       if (clickCount >= SHOW_HEARTS_AFTER_CLICKS) {
         hearts.classList.add('visible');
         yesBtn.classList.add('glow');
